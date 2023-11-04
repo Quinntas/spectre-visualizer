@@ -4,7 +4,6 @@ import {ResultTableArea} from "@/components/result-table-area";
 import {revalidatePath} from "next/cache";
 import {conn} from "@/lib/connection";
 
-
 let data: any[] = []
 
 export default async function Home() {
