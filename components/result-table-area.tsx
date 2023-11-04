@@ -48,7 +48,7 @@ function createColumns<T>(data: any): ColumnDef<T>[] {
                         }
                     </>
                 },
-                cell: ({row}) => <span className={"flex items-center justify-start"}>{row.getValue(key)}</span>,
+                cell: ({row}) => <span className={"flex items-center justify-center"}>{row.getValue(key)}</span>,
             },
         )
     }
