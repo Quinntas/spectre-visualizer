@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import {Button} from "@/components/ui/button";
 import {format} from 'sql-formatter';
 import {Separator} from "@/components/ui/separator";
+import {useTheme} from "next-themes";
+import {ModeToggle} from "@/components/mode-toggle";
 
 const CodeEditor = dynamic(
     () => import("@uiw/react-textarea-code-editor").then((mod) => mod.default),
@@ -13,17 +15,19 @@ const CodeEditor = dynamic(
 
 export function SqlArea() {
     const [query, setQuery] = useState("SELECT * FROM users");
+    const {theme} = useTheme()
 
     return <>
         <CodeEditor
-            className="w-full h-full"
+            className="w-full h-full w-tc-editor-var"
+            data-color-mode={theme === "dark" ? "dark" : "light"}
             value={query}
             language="sql"
             onChange={(evn) => setQuery(evn.target.value)}
             style={{
                 fontSize: 15,
                 fontFamily: "Inter, Latin, sans-serif",
-                backgroundColor: "hsl(240 10% 3.9%)"
+                backgroundColor: theme === "dark" ? "hsl(240 10% 3.9%)" : "hsl(240 10% 98%)",
             }}
         />
 
@@ -39,6 +43,8 @@ export function SqlArea() {
                     setQuery(format(query))
                 }} className={"w-[100px] h-[35px]"}><span>Beautify</span></Button>
                 <Button className={"w-[100px] h-[35px]"}><span>Run</span></Button>
+
+                <ModeToggle/>
             </div>
         </div>
     </>
