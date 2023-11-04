@@ -13,8 +13,13 @@ const CodeEditor = dynamic(
     {ssr: false}
 );
 
-export function SqlArea() {
+interface SqlAreaProps {
+    run: (query: string) => Promise<string>
+}
+
+export function SqlArea(props: SqlAreaProps) {
     const [query, setQuery] = useState("SELECT * FROM users");
+    const [result, setResult] = useState<string>("");
     const {theme} = useTheme()
 
     return <>
@@ -35,14 +40,20 @@ export function SqlArea() {
 
         <div className={"flex justify-between w-full"}>
             <div className={"flex items-center gap-2 p-3 pb-4 justify-end"}>
-                <h1>Success!</h1>
+                <h1>{
+                    result ? result : "Success"
+                }</h1>
             </div>
 
             <div className={"flex items-center gap-2 p-3 pb-4 justify-end"}>
                 <Button onClick={() => {
                     setQuery(format(query))
                 }} className={"w-[100px] h-[35px]"}><span>Beautify</span></Button>
-                <Button className={"w-[100px] h-[35px]"}><span>Run</span></Button>
+                <Button
+                    onClick={() => {
+                        props.run(query).then(res => setResult(res))
+                    }}
+                    className={"w-[100px] h-[35px]"}><span>Run</span></Button>
 
                 <ModeToggle/>
             </div>

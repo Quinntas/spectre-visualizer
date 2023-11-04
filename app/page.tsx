@@ -1,28 +1,31 @@
 import {Separator} from "@/components/ui/separator";
 import {SqlArea} from "@/components/query-area";
 import {ResultTableArea} from "@/components/result-table-area";
+import {Spectre} from "spectre-orm/dist/spectre";
+import {revalidatePath} from "next/cache";
 
-const data = [
-    {
-        id: 1,
-        pid: "oaijsdoaisjdoasjd",
-        name: "John Doe",
-        email: "johndoe@gmail.com",
-        phone: "123456789",
-        updated_at: "22/12/22",
-        created_at: "22/12/22",
-    },
-]
+const conn = new Spectre("mysql://root:rootpwd@localhost:3306/meuadv")
 
-export default function Home() {
+let data: any[] = []
+
+export default async function Home() {
     return <>
         <div className={"w-screen h-screen"}>
             <div className={"flex flex-col w-full h-full"}>
-                <SqlArea/>
+                <SqlArea run={async (query) => {
+                    "use server"
+                    const result = await conn.strategy.rawQuery(query)
+                    if (!result.isSuccessful)
+                        return "Error in query"
+                    data = JSON.parse(JSON.stringify(result.returnValue))
+                    revalidatePath('/')
+                    return `Successfully fetched ${data.length} rows`
+                }}
+                />
 
                 <div className={"flex flex-col max-h-[300px]"}>
                     <Separator/>
-                    <ResultTableArea data={data}/>
+                    {data.length > 0 && <ResultTableArea data={data}/>}
                 </div>
             </div>
         </div>

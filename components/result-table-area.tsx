@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import {useEffect} from "react"
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -48,7 +49,13 @@ function createColumns<T>(data: any): ColumnDef<T>[] {
                         }
                     </>
                 },
-                cell: ({row}) => <span className={"flex items-center justify-center"}>{row.getValue(key)}</span>,
+                cell: ({row}) => {
+                    // @ts-ignore
+                    return row.getValue(key)?.length && row.getValue(key)?.length > 100 ? <span
+                            className={"flex items-center justify-start truncate max-w-[200px]"}>{row.getValue(key)}</span> :
+                        <span
+                            className={"flex items-center justify-center truncate"}>{row.getValue(key)}</span>
+                }
             },
         )
     }
@@ -92,7 +99,6 @@ export function ResultTableArea<T>(props: ResultTableAreaProps<T>) {
     const [columns, setColumns] = React.useState<ColumnDef<any>[]>(
         createColumns<T>(props.data[0])
     )
-
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -100,6 +106,10 @@ export function ResultTableArea<T>(props: ResultTableAreaProps<T>) {
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
+
+    useEffect(() => {
+        setColumns(createColumns<T>(props.data[0]))
+    }, [props.data]);
 
     const table = useReactTable({
         data: props.data,

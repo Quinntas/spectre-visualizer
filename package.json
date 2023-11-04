@@ -50,6 +50,7 @@
     "react-day-picker": "^8.9.1",
     "react-dom": "^18",
     "react-hook-form": "^7.47.0",
+    "spectre-orm": "latest",
     "sql-formatter": "^13.0.4",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
