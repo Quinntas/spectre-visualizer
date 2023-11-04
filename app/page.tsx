@@ -22,7 +22,6 @@ export default function Home() {
 
                 <div className={"flex flex-col max-h-[300px]"}>
                     <Separator/>
-
                     <ResultTableArea data={data}/>
                 </div>
             </div>
