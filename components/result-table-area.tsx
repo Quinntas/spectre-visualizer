@@ -17,14 +17,7 @@ import {
 import {ArrowUpDown, MoreHorizontal} from "lucide-react"
 
 import {Button} from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 
 function createColumns<T>(data: any): ColumnDef<T>[] {
@@ -75,15 +68,11 @@ function createColumns<T>(data: any): ColumnDef<T>[] {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText("Copy to clipboard")}
+                            onClick={() => navigator.clipboard.writeText(JSON.stringify(row.original))}
                         >
-                            Copy payment ID
+                            Copy JSON to clipboard
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator/>
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu></div>
         },

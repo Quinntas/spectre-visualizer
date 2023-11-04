@@ -15,8 +15,11 @@ export default async function Home() {
                 <SqlArea run={async (query) => {
                     "use server"
                     const result = await conn.strategy.rawQuery(query)
-                    if (!result.isSuccessful)
-                        return "Error in query"
+                    if (!result.isSuccessful) {
+                        if (result.isError)
+                            return `Error check query`
+                        return `${result.returnValue}`
+                    }
                     data = JSON.parse(JSON.stringify(result.returnValue))
                     revalidatePath('/')
                     return `Successfully fetched ${data.length} rows`
