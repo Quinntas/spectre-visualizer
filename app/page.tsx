@@ -1,10 +1,9 @@
 import {Separator} from "@/components/ui/separator";
 import {SqlArea} from "@/components/query-area";
 import {ResultTableArea} from "@/components/result-table-area";
-import {Spectre} from "spectre-orm/dist/spectre";
 import {revalidatePath} from "next/cache";
+import {conn} from "@/lib/connection";
 
-const conn = new Spectre("mysql://root:rootpwd@localhost:3306/meuadv")
 
 let data: any[] = []
 
@@ -14,6 +13,8 @@ export default async function Home() {
             <div className={"flex flex-col w-full h-full"}>
                 <SqlArea run={async (query) => {
                     "use server"
+                    if (!conn)
+                        return "No connection"
                     const result = await conn.strategy.rawQuery(query)
                     if (!result.isSuccessful) {
                         if (result.isError)
@@ -26,7 +27,7 @@ export default async function Home() {
                 }}
                 />
 
-                <div className={"flex flex-col max-h-[300px]"}>
+                <div className={"flex flex-col max-h-[400px]"}>
                     <Separator/>
                     {data.length > 0 && <ResultTableArea data={data}/>}
                 </div>
