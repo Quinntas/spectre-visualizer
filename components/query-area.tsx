@@ -23,7 +23,7 @@ export function SqlArea(props: SqlAreaProps) {
     const [query, setQuery] = useState("");
     const [result, setResult] = useState<string>("");
     const [history, setHistory] = useState<string[]>([]);
-    const [settingsModalOpen, setSettingsModalOpen] = useState<boolean>(false);
+    const [settingsModalOpen, setSettingsModalOpen] = useState<boolean>(true);
     const {theme} = useTheme()
 
     return <>
